@@ -58,7 +58,7 @@ hs_err_pid*
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
-# *.iml
+*.iml
 # *.ipr
 
 # CMake
@@ -94,3 +94,4 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
+.idea/*
