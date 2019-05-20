@@ -9,7 +9,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-       primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("view.fxml"))));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("view.fxml")));
+       scene.getStylesheets().add("View/dark-theme.css");
+       primaryStage.setScene(scene);
        primaryStage.show();
     }
 

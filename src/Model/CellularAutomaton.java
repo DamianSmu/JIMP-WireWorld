@@ -3,7 +3,10 @@ package Model;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class CellularAutomaton
 {
@@ -41,21 +44,6 @@ public class CellularAutomaton
         }
     }
 
-    public Rectangle[] getRectangles()
-    {
-        ArrayList<Rectangle> array = new ArrayList<>();
-
-        for (int x = 0; x < boardWidth; x++)
-        {
-            for (int y = 0; y < boardHeight; y++)
-            {
-                array.add(board[x][y].getRectangle());
-            }
-        }
-        return array.toArray(Rectangle[]::new);
-    }
-
-
     private void setNeighbours()
     {
         for (int x = 0; x < boardWidth; x++)
@@ -73,40 +61,39 @@ public class CellularAutomaton
         }
     }
 
+    public Rectangle[] getRectangles()
+    {
+        ArrayList<Rectangle> array = new ArrayList<>();
+        forEachCell(cell -> array.add(cell.getRectangle()));
+        return array.toArray(Rectangle[]::new);
+    }
+
     public void nextStep()
     {
         setNeighbours();
-        for (int x = 0; x < boardWidth; x++)
-        {
-            for (int y = 0; y < boardHeight; y++)
-            {
-                board[x][y].nextStep(ruleSet);
-            }
-        }
+        forEachCell(cell -> cell.nextStep(ruleSet));
     }
 
     public void draw()
     {
-        for (int x = 0; x < boardWidth; x++)
-        {
-            for (int y = 0; y < boardHeight; y++)
-            {
-                board[x][y].draw();
-            }
-        }
+        forEachCell(Cell::draw);
     }
 
     public void setPickedType(CellType pickedType)
+    {
+        forEachCell(cell -> cell.setClickType(pickedType));
+    }
+
+    public void forEachCell(Consumer<Cell> action)
     {
         for (int x = 0; x < boardWidth; x++)
         {
             for (int y = 0; y < boardHeight; y++)
             {
-                board[x][y].setClickType(pickedType);
+                action.accept(board[x][y]);
             }
         }
     }
-
 
     public static class CellularAutomatonBuilder
     {
