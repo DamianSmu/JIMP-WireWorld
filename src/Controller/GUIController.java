@@ -168,13 +168,7 @@ public class GUIController
     public void destroy()
     {
         timerTask.cancel();
+        timer.purge();
         timer.cancel();
-    }
-
-    @FXML
-    public void exitApplication(ActionEvent event) {
-
-
-        Platform.exit();
     }
 }

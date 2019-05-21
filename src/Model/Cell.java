@@ -11,6 +11,7 @@ public class Cell
     private int pxPosX;
     private int pxPosY;
     private int pxCellSize;
+    private CellType clickType;
 
     private HashMap<CellType, Integer> neighbours;
     private CellType type;
@@ -23,9 +24,11 @@ public class Cell
         this.type = type;
 
         neighbours = new HashMap<>();
-        rectangle = new Rectangle(pxPosX, pxPosY, pxCellSize, pxCellSize);
+        rectangle = new Rectangle(pxPosX, pxPosY, pxCellSize - 1, pxCellSize - 1);
         rectangle.setFill(Color.TRANSPARENT);
 
+        rectangle.setStrokeWidth(1);
+        rectangle.setStroke(Color.TRANSPARENT);
     }
 
     public void draw()
@@ -60,9 +63,19 @@ public class Cell
 
     public void setClickType(CellType pickedType)
     {
-        rectangle.setOnMouseClicked(mouseEvent -> {
-            setType(pickedType);
-            draw();
+        clickType = pickedType;
+        rectangle.setOnMouseEntered(mouseEvent -> {
+
+            if (mouseEvent.isAltDown())
+            {
+                setType(clickType);
+                draw();
+            }
         });
+        rectangle.setOnMouseClicked(mouseEvent1 -> {
+                    setType(clickType);
+                    draw();
+                }
+        );
     }
 }
