@@ -1,6 +1,6 @@
 package Model;
 
-public class Automatos
+public class Automatons
 {
     private static final int BOARD_WIDTH = 100;
     private static final int BOARD_HEIGHT = 100;

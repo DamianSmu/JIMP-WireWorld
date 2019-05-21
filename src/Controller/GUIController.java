@@ -1,9 +1,11 @@
 package Controller;
 
-import Model.Automatos;
+import Model.Automatons;
 import Model.CellularAutomaton;
 import Model.GameOfLifeCellType;
 import Model.WireWorldCelltype;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -137,7 +139,7 @@ public class GUIController
             ((RadioButton) toggle).setDisable(true);
         });
 
-        automaton = Automatos.createWireWorldAutomaton();
+        automaton = Automatons.createWireWorldAutomaton();
         anchorPane.getChildren().addAll(automaton.getRectangles());
 
         timerPaused = true;
@@ -155,11 +157,24 @@ public class GUIController
             ((RadioButton) toggle).setDisable(true);
         });
 
-        automaton = Automatos.createGameOfLifeAutomaton();
+        automaton = Automatons.createGameOfLifeAutomaton();
         anchorPane.getChildren().addAll(automaton.getRectangles());
 
         timerPaused = true;
         timer = new Timer();
         startTimer();
+    }
+
+    public void destroy()
+    {
+        timerTask.cancel();
+        timer.cancel();
+    }
+
+    @FXML
+    public void exitApplication(ActionEvent event) {
+
+
+        Platform.exit();
     }
 }

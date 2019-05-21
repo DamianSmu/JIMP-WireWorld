@@ -38,7 +38,7 @@ public class CellularAutomaton
         {
             for (int y = 0; y < boardHeight; y++)
             {
-                board[x][y] = new Cell(pxCellSize * x, pxCellSize * y, pxCellSize, GameOfLifeCellType.DEAD);
+                board[x][y] = new Cell(pxCellSize * x + x, pxCellSize * y + y, pxCellSize, GameOfLifeCellType.DEAD);
                 close[x][y] = new int[][]{{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1}, {x - 1, y}, {x + 1, y}, {x - 1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
             }
         }
