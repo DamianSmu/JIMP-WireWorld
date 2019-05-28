@@ -2,8 +2,7 @@ package Controller;
 
 import Model.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class FileIO {
@@ -21,6 +20,20 @@ public class FileIO {
         else if (ruleSet instanceof WireWorldRuleSet)
             WireWorldReader(sc, cells, h, w);
         return cells;
+    }
+
+    public static void saveToFile(String path, CellType[][] cells, IRuleSet ruleSet) throws IOException {
+        File file = new File(path);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(String.valueOf(cells.length));
+        writer.append(' ');
+        writer.append(String.valueOf(cells[0].length));
+        writer.newLine();
+        if (ruleSet instanceof GameOfLifeRuleSet)
+            GameOfLifeWriter(writer, file, cells);
+        else if (ruleSet instanceof WireWorldRuleSet)
+            WireWorldWriter(writer, file, cells);
+        writer.close();
     }
 
     private static void GameOfLifeReader(Scanner sc, CellType[][] cells, int h, int w) throws IllegalArgumentException{
@@ -85,6 +98,34 @@ public class FileIO {
                 }
                 else throw new IllegalArgumentException();
             }
+        }
+    }
+
+    private static void GameOfLifeWriter(BufferedWriter writer, File file, CellType[][] cells) throws IOException {
+        for (int i=0;i<cells.length;i++){
+            for (int j=0;j<cells[0].length;j++){
+                if (cells[i][j]==GameOfLifeCellType.DEAD)
+                    writer.append('0');
+                if (cells[i][j]==GameOfLifeCellType.ALIVE)
+                    writer.append('1');
+            }
+            writer.newLine();
+        }
+    }
+
+    private static void WireWorldWriter(BufferedWriter writer, File file, CellType[][] cells) throws IOException {
+        for (int i=0;i<cells.length;i++){
+            for (int j=0;j<cells[0].length;j++){
+                if (cells[i][j]== WireWorldCelltype.EMPTY)
+                    writer.append('0');
+                if (cells[i][j]== WireWorldCelltype.CONDUCTOR)
+                    writer.append('1');
+                if (cells[i][j]== WireWorldCelltype.HEAD)
+                    writer.append('0');
+                if (cells[i][j]== WireWorldCelltype.TAIL)
+                    writer.append('1');
+            }
+            writer.newLine();
         }
     }
 }
