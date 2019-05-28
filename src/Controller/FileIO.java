@@ -43,8 +43,11 @@ public class FileIO {
         while (sc.hasNext()) {
             char c = sc.next().charAt(0);
             if (c == '\n') {
-                ln++;
-                lw = 0;
+                if (lw==w) {
+                    ln++;
+                    lw = 0;
+                }
+                else throw new IllegalArgumentException();
             }
             if (c == '0') {
                 if (ln<h && lw <w) {
@@ -68,8 +71,11 @@ public class FileIO {
         while (sc.hasNext()) {
             char c = sc.next().charAt(0);
             if (c == '\n') {
-                ln++;
-                lw = 0;
+                if (lw==w) {
+                    ln++;
+                    lw = 0;
+                }
+                else throw new IllegalArgumentException();
             }
             if (c == '0') {
                 if (ln<h && lw <w) {
@@ -110,7 +116,8 @@ public class FileIO {
                 if (cells[i][j]==GameOfLifeCellType.ALIVE)
                     writer.append('1');
             }
-            writer.newLine();
+            if (i!= cells.length-1)
+                writer.newLine();
         }
     }
 
@@ -122,11 +129,12 @@ public class FileIO {
                 if (cells[i][j]== WireWorldCelltype.CONDUCTOR)
                     writer.append('1');
                 if (cells[i][j]== WireWorldCelltype.HEAD)
-                    writer.append('0');
+                    writer.append('2');
                 if (cells[i][j]== WireWorldCelltype.TAIL)
-                    writer.append('1');
+                    writer.append('3');
             }
-            writer.newLine();
+            if (i!= cells.length-1)
+                writer.newLine();
         }
     }
 }
