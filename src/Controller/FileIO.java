@@ -64,6 +64,8 @@ public class FileIO {
                 else throw new IllegalArgumentException();
             }
         }
+        if (ln<h-1)
+            throw new IllegalArgumentException();
     }
     private static void WireWorldReader(Scanner sc, CellType[][] cells, int h, int w) throws IllegalArgumentException{
         int ln=0;
@@ -106,6 +108,8 @@ public class FileIO {
                 else throw new IllegalArgumentException();
             }
         }
+        if (ln<h-1)
+            throw new IllegalArgumentException();
     }
 
     private static void GameOfLifeWriter(BufferedWriter writer, File file, CellType[][] cells) throws IOException {
