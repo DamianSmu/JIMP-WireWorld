@@ -19,6 +19,7 @@ public class FileIO {
             GameOfLifeReader(sc, cells, h, w);
         else if (ruleSet instanceof WireWorldRuleSet)
             WireWorldReader(sc, cells, h, w);
+        sc.close();
         return cells;
     }
 
