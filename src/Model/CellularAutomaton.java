@@ -95,6 +95,14 @@ public class CellularAutomaton
         }
     }
 
+    public IRuleSet getRuleSet(){
+        return ruleSet;
+    }
+
+    public Cell[][] getBoard(){
+        return board;
+    }
+
     public static class CellularAutomatonBuilder
     {
         private int boardWidth;

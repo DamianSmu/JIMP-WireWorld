@@ -23,8 +23,7 @@ public class FileIO {
         return cells;
     }
 
-    public static void saveToFile(String path, CellType[][] cells, IRuleSet ruleSet) throws IOException {
-        File file = new File(path);
+    public static void saveToFile(File file, CellType[][] cells, IRuleSet ruleSet) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(String.valueOf(cells.length));
         writer.append(' ');

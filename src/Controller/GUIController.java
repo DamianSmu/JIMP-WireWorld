@@ -1,15 +1,16 @@
 package Controller;
 
-import Model.Automatons;
-import Model.CellularAutomaton;
-import Model.GameOfLifeCellType;
-import Model.WireWorldCelltype;
+import Model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +24,7 @@ public class GUIController
     public ToggleButton gameOfLifeBtn;
     public Button startBtn;
     public Button stopBtn;
-
+    public MenuItem saveBtn;
 
     public ToggleGroup typePickerWireWorld;
     public ToggleGroup typePickerGameOfLife;
@@ -163,6 +164,24 @@ public class GUIController
         timerPaused = true;
         timer = new Timer();
         startTimer();
+    }
+
+    @FXML
+    public void saveBtnClicked(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+        File file = fileChooser.showSaveDialog(saveBtn.getParentPopup().getOwnerWindow());
+        if (file != null) {
+            try {
+                CellType[][] cells = new CellType[automaton.getBoard().length][(automaton.getBoard())[0].length];
+                for (int i = 0; i<automaton.getBoard().length;i++)
+                    for (int j=0;j<(automaton.getBoard())[0].length;j++)
+                        cells[i][j]=(automaton.getBoard())[i][j].getType();
+                Controller.FileIO.saveToFile(file, cells , automaton.getRuleSet() );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void destroy()
