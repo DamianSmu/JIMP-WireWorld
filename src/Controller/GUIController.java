@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +26,7 @@ public class GUIController
     public Button startBtn;
     public Button stopBtn;
     public MenuItem saveBtn;
+    public MenuItem openBtn;
 
     public ToggleGroup typePickerWireWorld;
     public ToggleGroup typePickerGameOfLife;
@@ -169,7 +171,7 @@ public class GUIController
     @FXML
     public void saveBtnClicked(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Image");
+        fileChooser.setTitle("Save File");
         File file = fileChooser.showSaveDialog(saveBtn.getParentPopup().getOwnerWindow());
         if (file != null) {
             try {
@@ -181,6 +183,26 @@ public class GUIController
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    public void openBtnClicked(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File");
+        File file = fileChooser.showOpenDialog(openBtn.getParentPopup().getOwnerWindow());
+        try {
+            CellType[][] cells = FileIO.readFromFile(file, automaton.getRuleSet());
+            anchorPane.getChildren().removeAll(automaton.getRectangles());
+
+            automaton.changeBoard(cells);
+
+            anchorPane.getChildren().addAll(automaton.getRectangles());
+            automaton.draw();
+
+            startTimer();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

@@ -7,8 +7,7 @@ import java.util.Scanner;
 
 public class FileIO {
 
-    public static CellType[][] readFromFile(String path, IRuleSet ruleSet) throws FileNotFoundException,IllegalArgumentException {
-        File file = new File(path);
+    public static CellType[][] readFromFile(File file, IRuleSet ruleSet) throws FileNotFoundException,IllegalArgumentException {
         Scanner sc = new Scanner(file);
         int h = sc.nextInt();
         int w = sc.nextInt();

@@ -61,6 +61,18 @@ public class CellularAutomaton
         }
     }
 
+    public void changeBoard(CellType[][] cells){
+        boardHeight = cells[0].length;
+        boardWidth = cells.length;
+        initializeBoard();
+        for (int i=0;i<boardWidth;i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                board[i][j].setType(cells[i][j]);
+            }
+        }
+        setNeighbours();
+    }
+
     public Rectangle[] getRectangles()
     {
         ArrayList<Rectangle> array = new ArrayList<>();
