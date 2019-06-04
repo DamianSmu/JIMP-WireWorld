@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -73,8 +74,11 @@ public class Cell
             }
         });
         rectangle.setOnMouseClicked(mouseEvent1 -> {
-                    setType(clickType);
-                    draw();
+            if(mouseEvent1.getButton().equals(MouseButton.PRIMARY))
+            {
+                setType(clickType);
+                draw();
+            }
                 }
         );
     }

@@ -107,7 +107,7 @@
                 </AnchorPane>
                 <ScrollPane fx:id="scrollPane" prefHeight="-1.0" prefWidth="-1.0">
                     <content>
-                        <AnchorPane id="Content" fx:id="anchorPane" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="666.0">
+                        <AnchorPane id="Content" fx:id="anchorPane" minHeight="-1.0" minWidth="-1.0" onMouseClicked="#boardMouseClicked" onMouseMoved="#boardMouseMoved" onMouseReleased="#boardMouseReleased" prefHeight="545.0" prefWidth="666.0">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>

@@ -61,13 +61,35 @@ public class CellularAutomaton
         }
     }
 
-    public void changeBoard(CellType[][] cells){
+    public void changeBoard(CellType[][] cells)
+    {
         boardHeight = cells.length;
         boardWidth = cells[0].length;
         initializeBoard();
-        for (int i=0;i<boardWidth;i++) {
-            for (int j = 0; j < boardHeight; j++) {
+        for (int i = 0; i < boardWidth; i++)
+        {
+            for (int j = 0; j < boardHeight; j++)
+            {
                 board[i][j].setType(cells[j][i]);
+            }
+        }
+        setNeighbours();
+    }
+
+    public void addCellsToBoard(CellType[][] cells, double pxPosX, double pxPosY)
+    {
+        int idX = (int)((pxPosX - pxPosX%pxCellSize)/pxCellSize);
+        int idY = (int)((pxPosY - pxPosY%pxCellSize)/pxCellSize);
+
+        int height = cells.length;
+        int width = cells[0].length;
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                board[i + idX][j + idY].setType(cells[i][j]);
+                draw();
             }
         }
         setNeighbours();
@@ -107,11 +129,13 @@ public class CellularAutomaton
         }
     }
 
-    public IRuleSet getRuleSet(){
+    public IRuleSet getRuleSet()
+    {
         return ruleSet;
     }
 
-    public Cell[][] getBoard(){
+    public Cell[][] getBoard()
+    {
         return board;
     }
 
@@ -152,4 +176,5 @@ public class CellularAutomaton
             return new CellularAutomaton(this);
         }
     }
+
 }

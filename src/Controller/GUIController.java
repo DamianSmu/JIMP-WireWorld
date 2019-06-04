@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
@@ -33,6 +35,7 @@ public class GUIController
     public ToggleGroup toggleGroup;
 
     private CellularAutomaton automaton;
+    private Pattern pattern;
     private Timer timer;
     private TimerTask timerTask;
     private boolean timerPaused;
@@ -169,18 +172,22 @@ public class GUIController
     }
 
     @FXML
-    public void saveBtnClicked(){
+    public void saveBtnClicked()
+    {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         File file = fileChooser.showSaveDialog(saveBtn.getParentPopup().getOwnerWindow());
-        if (file != null) {
-            try {
+        if (file != null)
+        {
+            try
+            {
                 CellType[][] cells = new CellType[automaton.getBoard()[0].length][(automaton.getBoard()).length];
-                for (int i = 0; i<automaton.getBoard()[0].length;i++)
-                    for (int j=0;j<(automaton.getBoard()).length;j++)
-                        cells[i][j]=(automaton.getBoard())[j][i].getType();
-                Controller.FileIO.saveToFile(file, cells , automaton.getRuleSet() );
-            } catch (IOException e) {
+                for (int i = 0; i < automaton.getBoard()[0].length; i++)
+                    for (int j = 0; j < (automaton.getBoard()).length; j++)
+                        cells[i][j] = (automaton.getBoard())[j][i].getType();
+                Controller.FileIO.saveToFile(file, cells, automaton.getRuleSet());
+            } catch (IOException e)
+            {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Couldn't save file");
@@ -192,11 +199,13 @@ public class GUIController
     }
 
     @FXML
-    public void openBtnClicked(){
+    public void openBtnClicked()
+    {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
         File file = fileChooser.showOpenDialog(openBtn.getParentPopup().getOwnerWindow());
-        try {
+        try
+        {
             CellType[][] cells = FileIO.readFromFile(file, automaton.getRuleSet());
             anchorPane.getChildren().removeAll(automaton.getRectangles());
 
@@ -206,13 +215,15 @@ public class GUIController
             automaton.draw();
 
             startTimer();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Couldn't open file");
             alert.setContentText("Please provide valid file");
             alert.showAndWait();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e)
+        {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Invalid file contents");
@@ -226,5 +237,31 @@ public class GUIController
         timerTask.cancel();
         timer.purge();
         timer.cancel();
+    }
+
+    public void boardMouseClicked(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton().equals(MouseButton.SECONDARY)  && pattern == null)
+        {
+            //TODO
+            pattern = new Pattern(/*CellType[][]*/ mouseEvent.getX(), mouseEvent.getY(), 10);
+            anchorPane.getChildren().addAll(pattern.getRectangles());
+        }
+    }
+
+    public void boardMouseMoved(MouseEvent mouseEvent)
+    {
+        if (pattern != null)
+            pattern.moveTo(mouseEvent.getX(), mouseEvent.getY());
+    }
+
+    public void boardMouseReleased(MouseEvent mouseEvent)
+    {
+        if (pattern != null)
+        {
+            anchorPane.getChildren().removeAll(pattern.getRectangles());
+            automaton.addCellsToBoard(pattern.getCells(), mouseEvent.getX(), mouseEvent.getY());
+            pattern = null;
+        }
     }
 }
