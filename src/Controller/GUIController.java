@@ -181,7 +181,12 @@ public class GUIController
                         cells[i][j]=(automaton.getBoard())[j][i].getType();
                 Controller.FileIO.saveToFile(file, cells , automaton.getRuleSet() );
             } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Couldn't save file");
+                alert.setContentText("Please provide a valid path");
+
+                alert.showAndWait();
             }
         }
     }
@@ -202,7 +207,17 @@ public class GUIController
 
             startTimer();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Couldn't open file");
+            alert.setContentText("Please provide valid file");
+            alert.showAndWait();
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid file contents");
+            alert.setContentText("Please check if file contents are valid and if right automaton is selected");
+            alert.showAndWait();
         }
     }
 
