@@ -62,12 +62,12 @@ public class CellularAutomaton
     }
 
     public void changeBoard(CellType[][] cells){
-        boardHeight = cells[0].length;
-        boardWidth = cells.length;
+        boardHeight = cells.length;
+        boardWidth = cells[0].length;
         initializeBoard();
         for (int i=0;i<boardWidth;i++) {
             for (int j = 0; j < boardHeight; j++) {
-                board[i][j].setType(cells[i][j]);
+                board[i][j].setType(cells[j][i]);
             }
         }
         setNeighbours();

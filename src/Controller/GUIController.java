@@ -175,10 +175,10 @@ public class GUIController
         File file = fileChooser.showSaveDialog(saveBtn.getParentPopup().getOwnerWindow());
         if (file != null) {
             try {
-                CellType[][] cells = new CellType[automaton.getBoard().length][(automaton.getBoard())[0].length];
-                for (int i = 0; i<automaton.getBoard().length;i++)
-                    for (int j=0;j<(automaton.getBoard())[0].length;j++)
-                        cells[i][j]=(automaton.getBoard())[i][j].getType();
+                CellType[][] cells = new CellType[automaton.getBoard()[0].length][(automaton.getBoard()).length];
+                for (int i = 0; i<automaton.getBoard()[0].length;i++)
+                    for (int j=0;j<(automaton.getBoard()).length;j++)
+                        cells[i][j]=(automaton.getBoard())[j][i].getType();
                 Controller.FileIO.saveToFile(file, cells , automaton.getRuleSet() );
             } catch (IOException e) {
                 e.printStackTrace();
