@@ -1,8 +1,5 @@
-package test.Model;
+package Model;
 
-import Model.CellType;
-import Model.WireWorldCelltype;
-import Model.WireWorldRuleSet;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

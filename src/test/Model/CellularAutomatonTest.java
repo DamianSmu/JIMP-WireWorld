@@ -1,9 +1,5 @@
-package test.Model;
+package Model;
 
-import Model.CellType;
-import Model.CellularAutomaton;
-import Model.GameOfLifeCellType;
-import Model.GameOfLifeRuleSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
