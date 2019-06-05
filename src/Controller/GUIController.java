@@ -229,7 +229,7 @@ public class GUIController
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Invalid file contents");
-            alert.setContentText("Please check if file contents are valid and if right automaton is selected");
+            alert.setContentText("Please check if file contents are valid\nand if right automaton is selected");
             alert.showAndWait();
         }
     }
@@ -253,7 +253,7 @@ public class GUIController
 
     public void blinkerBtnClicked(){
 
-        if (pattern == null) {
+        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
             pattern = new Pattern(/*CellType[][]*/ 0, 0, 10);
             anchorPane.getChildren().addAll(pattern.getRectangles());
         }
