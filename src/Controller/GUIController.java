@@ -1,12 +1,11 @@
 package Controller;
 
 import Model.*;
-import javafx.application.Platform;
+import Model.Patterns.GameOfLifePatterns;
+import Model.Patterns.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -50,6 +49,8 @@ public class GUIController
         speedSlider.setMax(50d);
         speedSlider.setBlockIncrement(1d);
 
+        GameOfLifePatterns.init();
+
         speedSlider.valueProperty().addListener((observableValue, number, t1) -> {
             timerTask.cancel();
             startTimer();
@@ -69,16 +70,16 @@ public class GUIController
                 switch (type)
                 {
                     case "empty":
-                        automaton.setPickedType(WireWorldCelltype.EMPTY);
+                        automaton.setPickedType(WireWorldCellType.EMPTY);
                         break;
                     case "conductor":
-                        automaton.setPickedType(WireWorldCelltype.CONDUCTOR);
+                        automaton.setPickedType(WireWorldCellType.CONDUCTOR);
                         break;
                     case "head":
-                        automaton.setPickedType(WireWorldCelltype.HEAD);
+                        automaton.setPickedType(WireWorldCellType.HEAD);
                         break;
                     case "tail":
-                        automaton.setPickedType(WireWorldCelltype.TAIL);
+                        automaton.setPickedType(WireWorldCellType.TAIL);
                         break;
                 }
             }
@@ -241,24 +242,6 @@ public class GUIController
         timer.cancel();
     }
 
-    /*public void boardMouseClicked(MouseEvent mouseEvent)
-    {
-        *//*if(mouseEvent.getButton().equals(MouseButton.SECONDARY)  && pattern == null)
-        {
-            //TODO
-            pattern = new Pattern(*//**//*CellType[][]*//**//* mouseEvent.getX(), mouseEvent.getY(), 10);
-            anchorPane.getChildren().addAll(pattern.getRectangles());
-        }*//*
-    }*/
-
-    public void blinkerBtnClicked(){
-
-        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
-            pattern = new Pattern(/*CellType[][]*/ 0, 0, 10);
-            anchorPane.getChildren().addAll(pattern.getRectangles());
-        }
-    }
-
     public void boardMouseMoved(MouseEvent mouseEvent)
     {
         if (pattern != null)
@@ -274,4 +257,29 @@ public class GUIController
             pattern = null;
         }
     }
+
+    public void blinkerBtnClicked(){
+
+        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
+            pattern = new Pattern(GameOfLifePatterns.blinker, 0, 0, 10);
+            anchorPane.getChildren().addAll(pattern.getRectangles());
+        }
+    }
+
+    public void gunBtnClicked()
+    {
+        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
+            pattern = new Pattern(GameOfLifePatterns.gun, 0, 0, 10);
+            anchorPane.getChildren().addAll(pattern.getRectangles());
+        }
+    }
+
+    public void foreverBtnClicked()
+    {
+        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
+            pattern = new Pattern(GameOfLifePatterns.forever, 0, 0, 10);
+            anchorPane.getChildren().addAll(pattern.getRectangles());
+        }
+    }
+
 }

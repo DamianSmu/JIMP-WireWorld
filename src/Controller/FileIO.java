@@ -79,28 +79,28 @@ public class FileIO {
             }
             if (c == '0') {
                 if (ln<h && lw <w) {
-                    cells[ln][lw] = WireWorldCelltype.EMPTY;
+                    cells[ln][lw] = WireWorldCellType.EMPTY;
                     lw++;
                 }
                 else throw new IllegalArgumentException();
             }
             if (c == '1') {
                 if (ln<h && lw <w) {
-                    cells[ln][lw] = WireWorldCelltype.CONDUCTOR;
+                    cells[ln][lw] = WireWorldCellType.CONDUCTOR;
                     lw++;
                 }
                 else throw new IllegalArgumentException();
             }
             if (c == '2') {
                 if (ln<h && lw <w) {
-                    cells[ln][lw] = WireWorldCelltype.HEAD;
+                    cells[ln][lw] = WireWorldCellType.HEAD;
                     lw++;
                 }
                 else throw new IllegalArgumentException();
             }
             if (c == '3') {
                 if (ln<h && lw <w) {
-                    cells[ln][lw] = WireWorldCelltype.TAIL;
+                    cells[ln][lw] = WireWorldCellType.TAIL;
                     lw++;
                 }
                 else throw new IllegalArgumentException();
@@ -126,13 +126,13 @@ public class FileIO {
     private static void WireWorldWriter(BufferedWriter writer, File file, CellType[][] cells) throws IOException {
         for (int i=0;i<cells.length;i++){
             for (int j=0;j<cells[0].length;j++){
-                if (cells[i][j]== WireWorldCelltype.EMPTY)
+                if (cells[i][j]== WireWorldCellType.EMPTY)
                     writer.append('0');
-                if (cells[i][j]== WireWorldCelltype.CONDUCTOR)
+                if (cells[i][j]== WireWorldCellType.CONDUCTOR)
                     writer.append('1');
-                if (cells[i][j]== WireWorldCelltype.HEAD)
+                if (cells[i][j]== WireWorldCellType.HEAD)
                     writer.append('2');
-                if (cells[i][j]== WireWorldCelltype.TAIL)
+                if (cells[i][j]== WireWorldCellType.TAIL)
                     writer.append('3');
             }
             if (i!= cells.length-1)

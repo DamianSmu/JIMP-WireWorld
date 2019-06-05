@@ -118,6 +118,8 @@
                   <ContextMenu>
                     <items>
                       <MenuItem fx:id="blinkerBtn" mnemonicParsing="false" onAction="#blinkerBtnClicked" text="Blinker" />
+                        <MenuItem fx:id="gunBtn" mnemonicParsing="false" onAction="#gunBtnClicked" text="Gun" />
+                        <MenuItem fx:id="foreverBtn" mnemonicParsing="false" onAction="#foreverBtnClicked" text="Forever" />
                     </items>
                   </ContextMenu>
                </contextMenu>
