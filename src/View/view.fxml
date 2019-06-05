@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -107,12 +108,19 @@
                 </AnchorPane>
                 <ScrollPane fx:id="scrollPane" prefHeight="-1.0" prefWidth="-1.0">
                     <content>
-                        <AnchorPane id="Content" fx:id="anchorPane" minHeight="-1.0" minWidth="-1.0" onMouseClicked="#boardMouseClicked" onMouseMoved="#boardMouseMoved" onMouseReleased="#boardMouseReleased" prefHeight="545.0" prefWidth="666.0">
+                        <AnchorPane id="Content" fx:id="anchorPane" minHeight="-1.0" minWidth="-1.0" onMouseMoved="#boardMouseMoved" onMouseReleased="#boardMouseReleased" prefHeight="545.0" prefWidth="666.0">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </AnchorPane>
                     </content>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem fx:id="blinkerBtn" mnemonicParsing="false" onAction="#blinkerBtnClicked" text="Blinker" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
                 </ScrollPane>
             </items>
         </SplitPane>

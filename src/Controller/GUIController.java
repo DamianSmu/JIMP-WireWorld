@@ -30,6 +30,8 @@ public class GUIController
     public MenuItem saveBtn;
     public MenuItem openBtn;
 
+    public MenuItem blinkerBtn;
+
     public ToggleGroup typePickerWireWorld;
     public ToggleGroup typePickerGameOfLife;
     public ToggleGroup toggleGroup;
@@ -239,12 +241,20 @@ public class GUIController
         timer.cancel();
     }
 
-    public void boardMouseClicked(MouseEvent mouseEvent)
+    /*public void boardMouseClicked(MouseEvent mouseEvent)
     {
-        if(mouseEvent.getButton().equals(MouseButton.SECONDARY)  && pattern == null)
+        *//*if(mouseEvent.getButton().equals(MouseButton.SECONDARY)  && pattern == null)
         {
             //TODO
-            pattern = new Pattern(/*CellType[][]*/ mouseEvent.getX(), mouseEvent.getY(), 10);
+            pattern = new Pattern(*//**//*CellType[][]*//**//* mouseEvent.getX(), mouseEvent.getY(), 10);
+            anchorPane.getChildren().addAll(pattern.getRectangles());
+        }*//*
+    }*/
+
+    public void blinkerBtnClicked(){
+
+        if (pattern == null) {
+            pattern = new Pattern(/*CellType[][]*/ 0, 0, 10);
             anchorPane.getChildren().addAll(pattern.getRectangles());
         }
     }
