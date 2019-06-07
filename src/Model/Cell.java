@@ -78,6 +78,7 @@ public class Cell
             {
                 setType(clickType);
                 draw();
+                System.out.println("test");
             }
                 }
         );

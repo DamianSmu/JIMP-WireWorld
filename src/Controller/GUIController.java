@@ -6,6 +6,7 @@ import Model.Patterns.Pattern;
 import Model.Patterns.PatternsUtil;
 import Model.Patterns.WireWorldPatterns;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -293,5 +294,27 @@ public class GUIController
     private void setGameOfLifePicekr(boolean enable)
     {
         typePickerGameOfLife.getToggles().forEach(toggle -> ((RadioButton) toggle).setDisable(!enable));
+    }
+
+    public void zoomOutBtnClicked()
+    {
+        if(Automatons.CELL_SIZE > 3 )
+        {
+            timerPaused = true;
+            anchorPane.getChildren().removeAll(automaton.getRectangles());
+            automaton.zoom(--Automatons.CELL_SIZE);
+            anchorPane.getChildren().addAll(automaton.getRectangles());
+        }
+    }
+
+    public void zoomInBtnClicked()
+    {
+        if(Automatons.CELL_SIZE < 25 )
+        {
+            timerPaused = true;
+            anchorPane.getChildren().removeAll(automaton.getRectangles());
+            automaton.zoom(++Automatons.CELL_SIZE);
+            anchorPane.getChildren().addAll(automaton.getRectangles());
+        }
     }
 }

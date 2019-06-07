@@ -16,6 +16,7 @@ public class CellularAutomaton
     private int pxCellSize;
     private CellType defaultCellType;
     private CellType pickedColor;
+    private CellType pickedType;
 
     public CellularAutomaton(CellularAutomatonBuilder builder)
     {
@@ -36,7 +37,7 @@ public class CellularAutomaton
         {
             for (int y = 0; y < boardHeight; y++)
             {
-                board[x][y] = new Cell(pxCellSize * x, pxCellSize * y, pxCellSize, GameOfLifeCellType.DEAD);
+                board[x][y] = new Cell(pxCellSize * x, pxCellSize * y, pxCellSize, defaultCellType);
                 close[x][y] = new int[][]{{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1}, {x - 1, y}, {x + 1, y}, {x - 1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
             }
         }
@@ -77,8 +78,8 @@ public class CellularAutomaton
 
     public synchronized void addCellsToBoard(CellType[][] cells, double pxPosX, double pxPosY)
     {
-        int idX = (int)((pxPosX - pxPosX%pxCellSize)/pxCellSize);
-        int idY = (int)((pxPosY - pxPosY%pxCellSize)/pxCellSize);
+        int idX = (int) ((pxPosX - pxPosX % pxCellSize) / pxCellSize);
+        int idY = (int) ((pxPosY - pxPosY % pxCellSize) / pxCellSize);
 
         int height = cells.length;
         int width = cells[0].length;
@@ -87,7 +88,7 @@ public class CellularAutomaton
         {
             for (int j = 0; j < width; j++)
             {
-                board[j + idX][ i + idY].setType(cells[i][j]);
+                board[j + idX][i + idY].setType(cells[i][j]);
                 draw();
             }
         }
@@ -114,6 +115,7 @@ public class CellularAutomaton
 
     public void setPickedType(CellType pickedType)
     {
+        this.pickedType = pickedType;
         forEachCell(cell -> cell.setClickType(pickedType));
     }
 
@@ -136,6 +138,28 @@ public class CellularAutomaton
     public Cell[][] getBoard()
     {
         return board;
+    }
+
+    public void zoom(int pxCellSize)
+    {
+        this.pxCellSize = pxCellSize;
+        CellType[][] oldCellTypes = getCellTypes();
+        changeBoard(oldCellTypes);
+        forEachCell(Cell::draw);
+        forEachCell(cell -> cell.setClickType(pickedType));
+    }
+
+    public CellType[][] getCellTypes()
+    {
+        CellType[][] ret = new CellType[boardHeight][boardWidth];
+        for (int x = 0; x < boardWidth; x++)
+        {
+            for (int y = 0; y < boardHeight; y++)
+            {
+                ret[y][x] = board[x][y].getType();
+            }
+        }
+        return ret;
     }
 
     public static class CellularAutomatonBuilder
@@ -175,5 +199,4 @@ public class CellularAutomaton
             return new CellularAutomaton(this);
         }
     }
-
 }

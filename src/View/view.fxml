@@ -104,6 +104,8 @@
                                 </ImageView>
                             </graphic>
                         </RadioButton>
+                  <Button fx:id="zoomInBtn" layoutX="31.0" layoutY="512.0" mnemonicParsing="false" onAction="#zoomInBtnClicked" text="Zoom in" />
+                  <Button fx:id="zoomOutBtn" layoutX="117.0" layoutY="512.0" mnemonicParsing="false" onAction="#zoomOutBtnClicked" text="Zoom out" />
                     </children>
                 </AnchorPane>
                 <ScrollPane fx:id="scrollPane" prefHeight="-1.0" prefWidth="-1.0">
