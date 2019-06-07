@@ -15,7 +15,6 @@ public class CellularAutomaton
     private int boardHeight;
     private int pxCellSize;
     private CellType defaultCellType;
-    private CellType pickedColor;
     private CellType pickedType;
 
     public CellularAutomaton(CellularAutomatonBuilder builder)
@@ -41,6 +40,7 @@ public class CellularAutomaton
                 close[x][y] = new int[][]{{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1}, {x - 1, y}, {x + 1, y}, {x - 1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
             }
         }
+        setPickedType(defaultCellType);
     }
 
     private synchronized void setNeighbours()
@@ -146,7 +146,7 @@ public class CellularAutomaton
         CellType[][] oldCellTypes = getCellTypes();
         changeBoard(oldCellTypes);
         forEachCell(Cell::draw);
-        forEachCell(cell -> cell.setClickType(pickedType));
+        //forEachCell(cell -> cell.setClickType(pickedType));
     }
 
     public CellType[][] getCellTypes()

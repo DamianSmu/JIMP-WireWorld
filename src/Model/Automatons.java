@@ -18,7 +18,7 @@ public class Automatons
     public static CellularAutomaton createWireWorldAutomaton()
     {
         return new CellularAutomaton.CellularAutomatonBuilder(BOARD_WIDTH, BOARD_HEIGHT)
-                .setDefaultCellType(GameOfLifeCellType.DEAD)
+                .setDefaultCellType(WireWorldCellType.EMPTY)
                 .setRuleSet(new WireWorldRuleSet())
                 .setPxCellSize(CELL_SIZE)
                 .build();
