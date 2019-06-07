@@ -3,7 +3,9 @@ package Controller;
 import Model.*;
 import Model.Patterns.GameOfLifePatterns;
 import Model.Patterns.Pattern;
-import javafx.event.ActionEvent;
+import Model.Patterns.PatternsUtil;
+import Model.Patterns.WireWorldPatterns;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +21,6 @@ import java.util.TimerTask;
 
 public class GUIController
 {
-
     public AnchorPane anchorPane;
     public Slider speedSlider;
     public ToggleButton wireWorldBtn;
@@ -28,85 +29,30 @@ public class GUIController
     public Button stopBtn;
     public MenuItem saveBtn;
     public MenuItem openBtn;
-
-    public MenuItem blinkerBtn;
-
     public ToggleGroup typePickerWireWorld;
     public ToggleGroup typePickerGameOfLife;
     public ToggleGroup toggleGroup;
+    public ContextMenu contextMenu;
+    public Label leftStatus;
 
     private CellularAutomaton automaton;
     private Pattern pattern;
-    private Timer timer;
     private TimerTask timerTask;
     private boolean timerPaused;
+    private int generationCounter;
 
     @FXML
     public void initialize()
     {
-
-        speedSlider.setMin(1d);
-        speedSlider.setMax(50d);
-        speedSlider.setBlockIncrement(1d);
-
         GameOfLifePatterns.init();
-
-        speedSlider.valueProperty().addListener((observableValue, number, t1) -> {
-            timerTask.cancel();
-            startTimer();
-        });
+        WireWorldPatterns.init();
+        setWireWorldPicekr(false);
+        setGameOfLifePicekr(true);
+        setSliderAction();
+        setPickerActions();
+        setContextMenuAction();
 
         gameOfLifeBtnClicked();
-
-        typePickerWireWorld.getToggles().forEach(toggle -> {
-            ((RadioButton) toggle).setDisable(true);
-        });
-
-        typePickerWireWorld.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            if (typePickerWireWorld.getSelectedToggle() != null)
-            {
-                RadioButton selected = (RadioButton) typePickerWireWorld.getSelectedToggle();
-                String type = selected.getText();
-                switch (type)
-                {
-                    case "empty":
-                        automaton.setPickedType(WireWorldCellType.EMPTY);
-                        break;
-                    case "conductor":
-                        automaton.setPickedType(WireWorldCellType.CONDUCTOR);
-                        break;
-                    case "head":
-                        automaton.setPickedType(WireWorldCellType.HEAD);
-                        break;
-                    case "tail":
-                        automaton.setPickedType(WireWorldCellType.TAIL);
-                        break;
-                }
-            }
-        });
-
-        typePickerGameOfLife.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            if (typePickerGameOfLife.getSelectedToggle() != null)
-            {
-                RadioButton selected = (RadioButton) typePickerGameOfLife.getSelectedToggle();
-                String type = selected.getText();
-                switch (type)
-                {
-                    case "dead":
-                        automaton.setPickedType(GameOfLifeCellType.DEAD);
-                        break;
-                    case "alive":
-                        automaton.setPickedType(GameOfLifeCellType.ALIVE);
-                        break;
-                }
-            }
-        });
-
-
-        toggleGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            anchorPane.getChildren().removeAll(automaton.getRectangles());
-            timerTask.cancel();
-        });
     }
 
     @FXML
@@ -123,6 +69,7 @@ public class GUIController
 
     private void startTimer()
     {
+        Timer timer = new Timer(true);
         timerTask = new TimerTask()
         {
             @Override
@@ -132,6 +79,8 @@ public class GUIController
                 {
                     automaton.nextStep();
                     automaton.draw();
+                    generationCounter++;
+                    Platform.runLater(() -> leftStatus.setText("Generation: " + generationCounter));
                 }
             }
         };
@@ -141,37 +90,32 @@ public class GUIController
     @FXML
     public void wireWorldBtnClicked()
     {
-        typePickerWireWorld.getToggles().forEach(toggle -> {
-            ((RadioButton) toggle).setDisable(false);
-        });
-        typePickerGameOfLife.getToggles().forEach(toggle -> {
-            ((RadioButton) toggle).setDisable(true);
-        });
+        generationCounter = 0;
+        setWireWorldPicekr(true);
+        setGameOfLifePicekr(false);
 
         automaton = Automatons.createWireWorldAutomaton();
         anchorPane.getChildren().addAll(automaton.getRectangles());
 
         timerPaused = true;
-        timer = new Timer();
         startTimer();
+
+        setWireWorldPatterns();
     }
 
     @FXML
     public void gameOfLifeBtnClicked()
     {
-        typePickerGameOfLife.getToggles().forEach(toggle -> {
-            ((RadioButton) toggle).setDisable(false);
-        });
-        typePickerWireWorld.getToggles().forEach(toggle -> {
-            ((RadioButton) toggle).setDisable(true);
-        });
+        generationCounter = 0;
+        setGameOfLifePicekr(true);
+        setWireWorldPicekr(false);
 
         automaton = Automatons.createGameOfLifeAutomaton();
         anchorPane.getChildren().addAll(automaton.getRectangles());
 
         timerPaused = true;
-        timer = new Timer();
         startTimer();
+        setGameOfLifePatterns();
     }
 
     @FXML
@@ -235,13 +179,6 @@ public class GUIController
         }
     }
 
-    public void destroy()
-    {
-        timerTask.cancel();
-        timer.purge();
-        timer.cancel();
-    }
-
     public void boardMouseMoved(MouseEvent mouseEvent)
     {
         if (pattern != null)
@@ -258,28 +195,103 @@ public class GUIController
         }
     }
 
-    public void blinkerBtnClicked(){
-
-        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
-            pattern = new Pattern(GameOfLifePatterns.blinker, 0, 0, 10);
-            anchorPane.getChildren().addAll(pattern.getRectangles());
-        }
-    }
-
-    public void gunBtnClicked()
+    public void loadPattern(String name, double posX, double posY)
     {
-        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
-            pattern = new Pattern(GameOfLifePatterns.gun, 0, 0, 10);
+        if (pattern == null)
+        {
+            pattern = new Pattern(PatternsUtil.forName(name), posX, posY, Automatons.CELL_SIZE);
             anchorPane.getChildren().addAll(pattern.getRectangles());
         }
     }
 
-    public void foreverBtnClicked()
+    private void setGameOfLifePatterns()
     {
-        if (pattern == null && automaton.getRuleSet() instanceof  GameOfLifeRuleSet) {
-            pattern = new Pattern(GameOfLifePatterns.forever, 0, 0, 10);
-            anchorPane.getChildren().addAll(pattern.getRectangles());
-        }
+        contextMenu.getItems().removeAll(contextMenu.getItems());
+        contextMenu.getItems().add(new MenuItem("Blinker"));
+        contextMenu.getItems().add(new MenuItem("Gun"));
+        contextMenu.getItems().add(new MenuItem("Forever"));
     }
 
+    private void setWireWorldPatterns()
+    {
+        contextMenu.getItems().removeAll(contextMenu.getItems());
+        contextMenu.getItems().add(new MenuItem("Diodes"));
+        contextMenu.getItems().add(new MenuItem("High Freq Gen"));
+        contextMenu.getItems().add(new MenuItem("Low Freq Gen"));
+        contextMenu.getItems().add(new MenuItem("NAND"));
+        contextMenu.getItems().add(new MenuItem("NOT"));
+        contextMenu.getItems().add(new MenuItem("OR"));
+        contextMenu.getItems().add(new MenuItem("XOR"));
+    }
+
+    private void setSliderAction()
+    {
+        speedSlider.valueProperty().addListener((observableValue, number, t1) -> {
+            timerTask.cancel();
+            startTimer();
+        });
+    }
+
+    private void setPickerActions()
+    {
+        typePickerWireWorld.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (typePickerWireWorld.getSelectedToggle() != null)
+            {
+                RadioButton selected = (RadioButton) typePickerWireWorld.getSelectedToggle();
+                String type = selected.getText();
+                switch (type)
+                {
+                    case "empty":
+                        automaton.setPickedType(WireWorldCellType.EMPTY);
+                        break;
+                    case "conductor":
+                        automaton.setPickedType(WireWorldCellType.CONDUCTOR);
+                        break;
+                    case "head":
+                        automaton.setPickedType(WireWorldCellType.HEAD);
+                        break;
+                    case "tail":
+                        automaton.setPickedType(WireWorldCellType.TAIL);
+                        break;
+                }
+            }
+        });
+        typePickerGameOfLife.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (typePickerGameOfLife.getSelectedToggle() != null)
+            {
+                RadioButton selected = (RadioButton) typePickerGameOfLife.getSelectedToggle();
+                String type = selected.getText();
+                switch (type)
+                {
+                    case "dead":
+                        automaton.setPickedType(GameOfLifeCellType.DEAD);
+                        break;
+                    case "alive":
+                        automaton.setPickedType(GameOfLifeCellType.ALIVE);
+                        break;
+                }
+            }
+        });
+
+        toggleGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            anchorPane.getChildren().removeAll(automaton.getRectangles());
+            timerTask.cancel();
+        });
+    }
+
+    private void setContextMenuAction()
+    {
+        contextMenu.setOnAction(e -> loadPattern(((MenuItem) e.getTarget()).getText(), contextMenu.getAnchorX(), contextMenu.getAnchorY()));
+        setGameOfLifePatterns();
+    }
+
+    private void setWireWorldPicekr(boolean enable)
+    {
+        typePickerWireWorld.getToggles().forEach(toggle -> ((RadioButton) toggle).setDisable(!enable));
+    }
+
+    private void setGameOfLifePicekr(boolean enable)
+    {
+        typePickerGameOfLife.getToggles().forEach(toggle -> ((RadioButton) toggle).setDisable(!enable));
+    }
 }

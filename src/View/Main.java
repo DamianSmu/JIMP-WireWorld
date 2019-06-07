@@ -1,6 +1,5 @@
 package View;
 
-import Controller.GUIController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,8 +20,6 @@ public class Main extends Application
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent parent = fxmlLoader.load(getClass().getResource("view.fxml").openStream());
         Scene scene = new Scene(parent);
-        GUIController controller = fxmlLoader.getController();
-        primaryStage.setOnCloseRequest(windowEvent -> controller.destroy());
         scene.getStylesheets().add("View/dark-theme.css");
         primaryStage.setScene(scene);
         primaryStage.show();

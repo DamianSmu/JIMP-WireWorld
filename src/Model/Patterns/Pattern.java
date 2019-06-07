@@ -1,7 +1,6 @@
 package Model.Patterns;
 
 import Model.CellType;
-import Model.GameOfLifeCellType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 

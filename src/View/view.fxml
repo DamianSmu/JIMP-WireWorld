@@ -41,29 +41,29 @@
             <items>
                 <AnchorPane>
                     <children>
-                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Master" textAlignment="CENTER" wrapText="false">
+                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Controls" textAlignment="CENTER" wrapText="false">
                             <font>
-                                <Font size="18.0" fx:id="x1" />
+                                <Font size="18.0" />
                             </font>
                             <textFill>
                                 <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
                             </textFill>
                         </Label>
-                        <Button fx:id="startBtn" layoutX="18.0" layoutY="101.0" mnemonicParsing="false" onMouseClicked="#startBtnClicked" text="Start" />
-                        <Button fx:id="stopBtn" layoutX="124.0" layoutY="101.0" mnemonicParsing="false" onMouseClicked="#stopBtnClicked" text="Stop" />
-                        <Slider fx:id="speedSlider" layoutX="31.0" layoutY="158.0" />
-                        <ToggleButton fx:id="gameOfLifeBtn" layoutX="18.0" layoutY="368.0" mnemonicParsing="false" onAction="#gameOfLifeBtnClicked" selected="true" text="Game of Life">
+                        <Button fx:id="startBtn" layoutX="39.0" layoutY="101.0" mnemonicParsing="false" onMouseClicked="#startBtnClicked" text="Start" />
+                        <Button fx:id="stopBtn" layoutX="145.0" layoutY="101.0" mnemonicParsing="false" onMouseClicked="#stopBtnClicked" text="Stop" />
+                        <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="41.0" layoutY="156.0" max="50.0" min="1.0" />
+                        <ToggleButton fx:id="gameOfLifeBtn" layoutX="18.0" layoutY="332.0" mnemonicParsing="false" onAction="#gameOfLifeBtnClicked" selected="true" text="Game of Life">
                             <toggleGroup>
                                 <ToggleGroup fx:id="toggleGroup" />
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="wireWorldBtn" layoutX="129.0" layoutY="368.0" mnemonicParsing="false" onAction="#wireWorldBtnClicked" text="WireWorld" toggleGroup="$toggleGroup" />
-                        <RadioButton layoutX="16.0" layoutY="224.0" mnemonicParsing="false" selected="true" text="empty">
+                        <ToggleButton fx:id="wireWorldBtn" layoutX="129.0" layoutY="332.0" mnemonicParsing="false" onAction="#wireWorldBtnClicked" text="WireWorld" toggleGroup="$toggleGroup" />
+                        <RadioButton layoutX="124.0" layoutY="241.0" mnemonicParsing="false" selected="true" text="empty">
                             <toggleGroup>
                                 <ToggleGroup fx:id="typePickerWireWorld" />
                             </toggleGroup>
                         </RadioButton>
-                        <RadioButton layoutX="16.0" layoutY="241.0" mnemonicParsing="false" text="conductor" toggleGroup="$typePickerWireWorld">
+                        <RadioButton layoutX="124.0" layoutY="258.0" mnemonicParsing="false" text="conductor" toggleGroup="$typePickerWireWorld">
                             <graphic>
                                 <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -72,7 +72,7 @@
                                 </ImageView>
                             </graphic>
                         </RadioButton>
-                        <RadioButton layoutX="16.0" layoutY="258.0" mnemonicParsing="false" text="head" toggleGroup="$typePickerWireWorld">
+                        <RadioButton layoutX="124.0" layoutY="275.0" mnemonicParsing="false" text="head" toggleGroup="$typePickerWireWorld">
                             <graphic>
                                 <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -81,7 +81,7 @@
                                 </ImageView>
                             </graphic>
                         </RadioButton>
-                        <RadioButton layoutX="16.0" layoutY="276.0" mnemonicParsing="false" text="tail" toggleGroup="$typePickerWireWorld">
+                        <RadioButton layoutX="124.0" layoutY="293.0" mnemonicParsing="false" text="tail" toggleGroup="$typePickerWireWorld">
                             <graphic>
                                 <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -90,12 +90,12 @@
                                 </ImageView>
                             </graphic>
                         </RadioButton>
-                        <RadioButton layoutX="122.0" layoutY="224.0" mnemonicParsing="false" selected="true" text="dead">
+                        <RadioButton layoutX="28.0" layoutY="242.0" mnemonicParsing="false" selected="true" text="dead">
                             <toggleGroup>
                                 <ToggleGroup fx:id="typePickerGameOfLife" />
                             </toggleGroup>
                         </RadioButton>
-                        <RadioButton layoutX="122.0" layoutY="241.0" mnemonicParsing="false" text="alive" toggleGroup="$typePickerGameOfLife">
+                        <RadioButton layoutX="28.0" layoutY="259.0" mnemonicParsing="false" text="alive" toggleGroup="$typePickerGameOfLife">
                             <graphic>
                                 <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -115,12 +115,7 @@
                         </AnchorPane>
                     </content>
                <contextMenu>
-                  <ContextMenu>
-                    <items>
-                      <MenuItem fx:id="blinkerBtn" mnemonicParsing="false" onAction="#blinkerBtnClicked" text="Blinker" />
-                        <MenuItem fx:id="gunBtn" mnemonicParsing="false" onAction="#gunBtnClicked" text="Gun" />
-                        <MenuItem fx:id="foreverBtn" mnemonicParsing="false" onAction="#foreverBtnClicked" text="Forever" />
-                    </items>
+                  <ContextMenu fx:id="contextMenu">
                   </ContextMenu>
                </contextMenu>
                 </ScrollPane>
@@ -128,7 +123,7 @@
         </SplitPane>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
             <children>
-                <Label fx:id="leftStatus" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+                <Label fx:id="leftStatus" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Generation: " HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="11.0" fx:id="x3" />
                     </font>

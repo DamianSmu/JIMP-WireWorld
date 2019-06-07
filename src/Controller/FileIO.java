@@ -82,9 +82,9 @@ public class FileIO {
                     cells[ln][lw] = WireWorldCellType.EMPTY;
                     lw++;
                 }
-                else throw new IllegalArgumentException();
+                else throw new IllegalArgumentException(Character.toString(c));
             }
-            if (c == '1') {
+            if (c == '3') {
                 if (ln<h && lw <w) {
                     cells[ln][lw] = WireWorldCellType.CONDUCTOR;
                     lw++;
@@ -98,7 +98,7 @@ public class FileIO {
                 }
                 else throw new IllegalArgumentException();
             }
-            if (c == '3') {
+            if (c == '1') {
                 if (ln<h && lw <w) {
                     cells[ln][lw] = WireWorldCellType.TAIL;
                     lw++;
@@ -129,11 +129,11 @@ public class FileIO {
                 if (cells[i][j]== WireWorldCellType.EMPTY)
                     writer.append('0');
                 if (cells[i][j]== WireWorldCellType.CONDUCTOR)
-                    writer.append('1');
+                    writer.append('3');
                 if (cells[i][j]== WireWorldCellType.HEAD)
                     writer.append('2');
                 if (cells[i][j]== WireWorldCellType.TAIL)
-                    writer.append('3');
+                    writer.append('1');
             }
             if (i!= cells.length-1)
                 writer.newLine();

@@ -3,10 +3,8 @@ package Model;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class CellularAutomaton
 {
@@ -44,13 +42,14 @@ public class CellularAutomaton
         }
     }
 
-    private void setNeighbours()
+    private synchronized void setNeighbours()
     {
         for (int x = 0; x < boardWidth; x++)
         {
             for (int y = 0; y < boardHeight; y++)
             {
-                HashMap<CellType, Integer> map = new HashMap<>();
+                HashMap<CellType, Integer> map = board[x][y].getNeighboursMap();
+                map.clear();
                 for (int i = 0; i < 8; i++)
                 {
                     if (close[x][y][i][0] > 0 && close[x][y][i][0] < boardWidth && close[x][y][i][1] > 0 && close[x][y][i][1] < boardHeight)
@@ -76,7 +75,7 @@ public class CellularAutomaton
         setNeighbours();
     }
 
-    public void addCellsToBoard(CellType[][] cells, double pxPosX, double pxPosY)
+    public synchronized void addCellsToBoard(CellType[][] cells, double pxPosX, double pxPosY)
     {
         int idX = (int)((pxPosX - pxPosX%pxCellSize)/pxCellSize);
         int idY = (int)((pxPosY - pxPosY%pxCellSize)/pxCellSize);
@@ -102,7 +101,7 @@ public class CellularAutomaton
         return array.toArray(Rectangle[]::new);
     }
 
-    public void nextStep()
+    public synchronized void nextStep()
     {
         setNeighbours();
         forEachCell(cell -> cell.nextStep(ruleSet));

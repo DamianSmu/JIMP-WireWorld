@@ -82,4 +82,9 @@ public class Cell
                 }
         );
     }
+
+    public HashMap<CellType, Integer> getNeighboursMap()
+    {
+        return neighbours;
+    }
 }
