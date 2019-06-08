@@ -63,9 +63,11 @@ public class CellularAutomaton
 
     public void changeBoard(CellType[][] cells)
     {
+        CellType type = pickedType;
         boardHeight = cells.length;
         boardWidth = cells[0].length;
         initializeBoard();
+        setPickedType(type);
         for (int i = 0; i < boardWidth; i++)
         {
             for (int j = 0; j < boardHeight; j++)
@@ -96,6 +98,7 @@ public class CellularAutomaton
     }
 
     public synchronized void resizeBoard (int width, int height){
+        CellType type = pickedType;
         CellType[][] cells = new CellType[height][width];
         for (int i = 0; i<height;i++)
             for (int j= 0; j<width;j++) {
@@ -107,6 +110,7 @@ public class CellularAutomaton
         boardWidth = width;
         boardHeight = height;
         initializeBoard();
+        setPickedType(type);
         addCellsToBoard(cells, 0,0);
     }
 
