@@ -125,26 +125,21 @@ public class GUIController
 
 
     @FXML
-    public void resizeBtnClicked(){
-        try {
-        if (Integer.parseInt(heightField.getText())>0 && Integer.parseInt(widthField.getText())>0) {
+    public void resizeBtnClicked()
+    {
+        try
+        {
+            if (Integer.parseInt(heightField.getText()) > 0 && Integer.parseInt(widthField.getText()) > 0)
+            {
                 anchorPane.getChildren().removeAll(automaton.getRectangles());
 
                 automaton.resizeBoard(Integer.parseInt(heightField.getText()), Integer.parseInt(widthField.getText()));
 
                 anchorPane.getChildren().addAll(automaton.getRectangles());
                 automaton.draw();
-            }
-        else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Illegal size");
-            alert.setContentText("Please provide valid size");
-
-            alert.showAndWait();
-            }
-        }
-        catch (NumberFormatException e){
+                automaton.setPickedType(getSelectedType());
+            } else
+            {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Illegal size");
@@ -152,6 +147,15 @@ public class GUIController
 
                 alert.showAndWait();
             }
+        } catch (NumberFormatException e)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Illegal size");
+            alert.setContentText("Please provide valid size");
+
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -274,38 +278,14 @@ public class GUIController
             if (typePickerWireWorld.getSelectedToggle() != null)
             {
                 RadioButton selected = (RadioButton) typePickerWireWorld.getSelectedToggle();
-                String type = selected.getText();
-                switch (type)
-                {
-                    case "empty":
-                        automaton.setPickedType(WireWorldCellType.EMPTY);
-                        break;
-                    case "conductor":
-                        automaton.setPickedType(WireWorldCellType.CONDUCTOR);
-                        break;
-                    case "head":
-                        automaton.setPickedType(WireWorldCellType.HEAD);
-                        break;
-                    case "tail":
-                        automaton.setPickedType(WireWorldCellType.TAIL);
-                        break;
-                }
+                automaton.setPickedType(cellTypeForName(selected.getText()));
             }
         });
         typePickerGameOfLife.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
             if (typePickerGameOfLife.getSelectedToggle() != null)
             {
                 RadioButton selected = (RadioButton) typePickerGameOfLife.getSelectedToggle();
-                String type = selected.getText();
-                switch (type)
-                {
-                    case "dead":
-                        automaton.setPickedType(GameOfLifeCellType.DEAD);
-                        break;
-                    case "alive":
-                        automaton.setPickedType(GameOfLifeCellType.ALIVE);
-                        break;
-                }
+                automaton.setPickedType(cellTypeForName(selected.getText()));
             }
         });
 
@@ -333,33 +313,72 @@ public class GUIController
 
     public void zoomOutBtnClicked()
     {
-        if(Automatons.CELL_SIZE > 3 )
+        if (Automatons.CELL_SIZE > 3)
         {
             timerPaused = true;
             anchorPane.getChildren().removeAll(automaton.getRectangles());
             automaton.zoom(--Automatons.CELL_SIZE);
             anchorPane.getChildren().addAll(automaton.getRectangles());
+            System.out.println(getSelectedType());
+            automaton.setPickedType(getSelectedType());
         }
     }
 
     public void zoomInBtnClicked()
     {
-        if(Automatons.CELL_SIZE < 25 )
+        if (Automatons.CELL_SIZE < 25)
         {
             timerPaused = true;
             anchorPane.getChildren().removeAll(automaton.getRectangles());
             automaton.zoom(++Automatons.CELL_SIZE);
             anchorPane.getChildren().addAll(automaton.getRectangles());
+            automaton.setPickedType(getSelectedType());
         }
     }
 
     public void rotateKeyPressed(KeyEvent keyEvent)
     {
-        if(keyEvent.getCode().equals(KeyCode.R) && pattern != null )
+        if (keyEvent.getCode().equals(KeyCode.R) && pattern != null)
         {
             anchorPane.getChildren().removeAll(pattern.getRectangles());
             pattern.rotate();
             anchorPane.getChildren().addAll(pattern.getRectangles());
+            automaton.setPickedType(getSelectedType());
+        }
+    }
+
+    private CellType cellTypeForName(String name)
+    {
+        switch (name)
+        {
+            case "empty":
+                return WireWorldCellType.EMPTY;
+            case "conductor":
+                return WireWorldCellType.CONDUCTOR;
+            case "head":
+                return WireWorldCellType.HEAD;
+            case "tail":
+                return WireWorldCellType.TAIL;
+            case "dead":
+                return GameOfLifeCellType.DEAD;
+            case "alive":
+                return GameOfLifeCellType.ALIVE;
+            default:
+                return null;
+        }
+    }
+
+    private CellType getSelectedType()
+    {
+        if(automaton.getRuleSet() instanceof GameOfLifeRuleSet)
+        {
+            RadioButton selected = (RadioButton) (typePickerGameOfLife.getSelectedToggle());
+            return cellTypeForName(selected.getText());
+        }
+        else
+        {
+            RadioButton selected = (RadioButton) typePickerWireWorld.getSelectedToggle();
+            return cellTypeForName(selected.getText());
         }
     }
 }
