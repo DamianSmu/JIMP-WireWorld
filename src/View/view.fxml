@@ -109,7 +109,6 @@
                   <Button fx:id="zoomOutBtn" layoutX="117.0" layoutY="512.0" mnemonicParsing="false" onAction="#zoomOutBtnClicked" text="Zoom out" />
                   <TextField fx:id="heightField" layoutX="67.0" layoutY="367.0" prefHeight="26.0" prefWidth="140.0" />
                   <TextField fx:id="widthField" layoutX="67.0" layoutY="407.0" prefHeight="26.0" prefWidth="140.0" />
-                  <Label text="Label" />
                   <Label layoutX="17.0" layoutY="371.0" prefHeight="18.0" prefWidth="41.0" text="Height" />
                   <Label layoutX="18.0" layoutY="411.0" prefHeight="18.0" prefWidth="42.0" text="Width" />
                   <Button layoutX="31.0" layoutY="446.0" mnemonicParsing="false" onAction="#resizeBtnClicked" prefHeight="26.0" prefWidth="59.0" text="Resize" />
