@@ -89,7 +89,7 @@ public class CellularAutomaton
             for (int j = 0; j < width; j++)
             {
                 board[j + idX][i + idY].setType(cells[i][j]);
-                //draw();
+                draw();
             }
         }
         setNeighbours();
