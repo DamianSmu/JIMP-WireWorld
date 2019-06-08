@@ -89,10 +89,25 @@ public class CellularAutomaton
             for (int j = 0; j < width; j++)
             {
                 board[j + idX][i + idY].setType(cells[i][j]);
-                draw();
+                //draw();
             }
         }
         setNeighbours();
+    }
+
+    public synchronized void resizeBoard (int width, int height){
+        CellType[][] cells = new CellType[height][width];
+        for (int i = 0; i<height;i++)
+            for (int j= 0; j<width;j++) {
+                if (j<boardWidth && i<boardHeight)
+                    cells[i][j] = board[j][i].getType();
+                else
+                    cells[i][j] = defaultCellType;
+            }
+        boardWidth = width;
+        boardHeight = height;
+        initializeBoard();
+        addCellsToBoard(cells, 0,0);
     }
 
     public Rectangle[] getRectangles()

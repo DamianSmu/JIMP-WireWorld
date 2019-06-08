@@ -37,6 +37,8 @@ public class GUIController
     public ToggleGroup toggleGroup;
     public ContextMenu contextMenu;
     public Label leftStatus;
+    public TextField widthField;
+    public TextField heightField;
 
     private CellularAutomaton automaton;
     private Pattern pattern;
@@ -119,6 +121,37 @@ public class GUIController
         timerPaused = true;
         startTimer();
         setGameOfLifePatterns();
+    }
+
+
+    @FXML
+    public void resizeBtnClicked(){
+        try {
+        if (Integer.parseInt(heightField.getText())>0 && Integer.parseInt(widthField.getText())>0) {
+                anchorPane.getChildren().removeAll(automaton.getRectangles());
+
+                automaton.resizeBoard(Integer.parseInt(heightField.getText()), Integer.parseInt(widthField.getText()));
+
+                anchorPane.getChildren().addAll(automaton.getRectangles());
+                automaton.draw();
+            }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Illegal size");
+            alert.setContentText("Please provide valid size");
+
+            alert.showAndWait();
+            }
+        }
+        catch (NumberFormatException e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Illegal size");
+                alert.setContentText("Please provide valid size");
+
+                alert.showAndWait();
+            }
     }
 
     @FXML
