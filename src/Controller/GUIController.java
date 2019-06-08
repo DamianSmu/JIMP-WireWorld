@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -315,6 +317,16 @@ public class GUIController
             anchorPane.getChildren().removeAll(automaton.getRectangles());
             automaton.zoom(++Automatons.CELL_SIZE);
             anchorPane.getChildren().addAll(automaton.getRectangles());
+        }
+    }
+
+    public void rotateKeyPressed(KeyEvent keyEvent)
+    {
+        if(keyEvent.getCode().equals(KeyCode.R) && pattern != null )
+        {
+            anchorPane.getChildren().removeAll(pattern.getRectangles());
+            pattern.rotate();
+            anchorPane.getChildren().addAll(pattern.getRectangles());
         }
     }
 }
