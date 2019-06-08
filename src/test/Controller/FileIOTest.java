@@ -38,7 +38,7 @@ class FileIOTest {
                 {{GameOfLifeCellType.DEAD,GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE,GameOfLifeCellType.DEAD,GameOfLifeCellType.DEAD},
                         {GameOfLifeCellType.DEAD,GameOfLifeCellType.DEAD,GameOfLifeCellType.DEAD,GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE},
                         {GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE,GameOfLifeCellType.ALIVE}};
-        File file = new File("test3.txt");
+        File file = new File("src\\test\\Controller\\test3.txt");
         IRuleSet ruleSet = new GameOfLifeRuleSet();
         try {
             file.createNewFile();

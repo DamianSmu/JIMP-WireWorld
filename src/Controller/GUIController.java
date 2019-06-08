@@ -106,6 +106,8 @@ public class GUIController
         startTimer();
 
         setWireWorldPatterns();
+
+        automaton.setPickedType(getSelectedType());
     }
 
     @FXML
@@ -121,6 +123,8 @@ public class GUIController
         timerPaused = true;
         startTimer();
         setGameOfLifePatterns();
+
+        automaton.setPickedType(getSelectedType());
     }
 
 
@@ -319,7 +323,6 @@ public class GUIController
             anchorPane.getChildren().removeAll(automaton.getRectangles());
             automaton.zoom(--Automatons.CELL_SIZE);
             anchorPane.getChildren().addAll(automaton.getRectangles());
-            System.out.println(getSelectedType());
             automaton.setPickedType(getSelectedType());
         }
     }
